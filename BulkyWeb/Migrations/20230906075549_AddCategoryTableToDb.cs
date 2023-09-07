@@ -11,7 +11,7 @@ namespace BulkyWeb.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Catagories",
+                name: "Categories",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -21,7 +21,7 @@ namespace BulkyWeb.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Catagories", x => x.Id);
+                    table.PrimaryKey("PK_Categories", x => x.Id);
                 });
         }
 
@@ -29,7 +29,7 @@ namespace BulkyWeb.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Catagories");
+                name: "Categories");
         }
     }
 }
