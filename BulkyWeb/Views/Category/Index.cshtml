@@ -1,7 +1,8 @@
 ﻿@{
     ViewData["Title"] = "Category";
 }
-@model List<Category>
+@using BulkyWeb.ViewModels
+@model CategoryViewData
 <div class="container">
     <div class="row pt-4 pb-3 sticky-top bg-light-subtle">
         <div class="col-6">
@@ -24,7 +25,7 @@
         </tr>
         </thead>
         <tbody>
-            @foreach(var obj in Model.OrderBy(u=>u.DisplayOrder))
+            @foreach(var obj in Model.Categories.OrderBy(u=>u.DisplayOrder))
             {
                 <tr>
                     <td>@obj.Name</td>

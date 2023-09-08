@@ -1,8 +1,9 @@
 ﻿@{
     ViewData["Title"] = "Edit Category";
 }
-@model Category
-<form method="post">
+@using BulkyWeb.ViewModels
+@model CategoryViewData
+<form method="post" asp-controller="Category" asp-action="Edit">
     <input asp-for="Id" hidden />
     <div class="border p-3 mt-4">
         <div class="row pb-2">

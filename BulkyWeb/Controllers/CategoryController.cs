@@ -1,5 +1,6 @@
 ﻿using BulkyWeb.Data;
 using BulkyWeb.Models;
+using BulkyWeb.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,15 +15,17 @@ namespace BulkyWeb.Controllers
         }
         public IActionResult Index()
         {
-            List<Category> objCategoryList = _db.Categories.ToList();
-            return View(objCategoryList);
+            //List<Category> objCategoryList = _db.Categories.ToList();
+            CategoryViewData vm = new CategoryViewData();
+            vm.Categories = _db.Categories.ToList();
+            return View(vm);
         }
         public IActionResult Create()
         {
             return View();
         }
         [HttpPost]
-        public IActionResult Create(Category obj)
+        public IActionResult Create(CategoryViewData obj)
         {
             if (obj.Name == obj.DisplayOrder.ToString())
             {
@@ -34,7 +37,7 @@ namespace BulkyWeb.Controllers
             }
             if (ModelState.IsValid)
             {
-                _db.Categories.Add(obj);
+                _db.Categories.Add(new() { Id = obj.Id,Name = obj.Name,DisplayOrder = obj.DisplayOrder });
                 _db.SaveChanges();
                 TempData["success"] = "Category created successfully.";
                 return RedirectToAction("Index");
@@ -54,10 +57,14 @@ namespace BulkyWeb.Controllers
             {
                 return NotFound();
             }
-            return View(categoryFromDb);
+            CategoryViewData vm = new CategoryViewData();
+            vm.Id = categoryFromDb.Id;
+            vm.Name = categoryFromDb.Name;
+            vm.DisplayOrder = categoryFromDb.DisplayOrder;
+            return View(vm);
         }
         [HttpPost]
-        public IActionResult Edit(Category obj)
+        public IActionResult Edit(CategoryViewData obj)
         {
             if (obj.Name == obj.DisplayOrder.ToString())
             {
@@ -67,9 +74,10 @@ namespace BulkyWeb.Controllers
             {
                 ModelState.AddModelError("", "Test is an invalid value.");
             }
+            //Category = 
             if (ModelState.IsValid)
             {
-                _db.Categories.Update(obj);
+                _db.Categories.Update( new() { Id=obj.Id,Name=obj.Name,DisplayOrder=obj.DisplayOrder} );
                 _db.SaveChanges();
                 TempData["success"] = "Category Updated successfully.";
                 return RedirectToAction("Index");
@@ -87,17 +95,21 @@ namespace BulkyWeb.Controllers
             {
                 return NotFound();
             }
-            return View(categoryFromDb);
+            CategoryViewData vm = new CategoryViewData();
+            vm.Id = categoryFromDb.Id;
+            vm.Name = categoryFromDb.Name;
+            vm.DisplayOrder = categoryFromDb.DisplayOrder;
+            return View(vm);
         }
         [HttpPost,ActionName("Delete")]
         public IActionResult DeletePOST(int? id)
         {
-            Category? obj = _db.Categories.Find(id);
-            if (obj == null)
+            Category? categoryFromDb = _db.Categories.Find(id);
+            if (categoryFromDb == null)
             {
                 return NotFound();
             }
-            _db.Categories.Remove(obj);
+            _db.Categories.Remove(categoryFromDb);
             _db.SaveChanges();
             TempData["success"] = "Category deleted successfully.";
             return RedirectToAction("Index");
